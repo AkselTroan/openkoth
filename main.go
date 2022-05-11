@@ -34,6 +34,7 @@ func main() {
 	router.DELETE("/rooms/:id", deleteRoom)
 	router.POST("/rooms/:id/vulnMachine", addVulnMachine)
 	router.GET("/rooms/:id/king", getKing)
+	router.PUT("/rooms/:id/king", putKing)
 
 
 	// By default it serves on :8080 unless a PORT environment variable was defined.

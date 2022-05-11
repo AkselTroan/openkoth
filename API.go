@@ -2,9 +2,11 @@ package main
 
 import (
     "net/http"
-
+	"fmt"
     "github.com/gin-gonic/gin"
 )
+
+
 
 // room struct
 type room struct {
@@ -18,12 +20,14 @@ type room struct {
 	Status 	    string  `json:"status"`
 }
 
-	// user struct
+
+// user struct
 type user struct {
 	ID        string  `json:"id"`
 	Username  string  `json:"username"`
 	Level     int  `json:"level"`
 }
+
 
 // This is temporary data to be used while developing the API.
 // users is a slice of user structs
@@ -32,6 +36,8 @@ var users = []user{
 	{ID: "2", Username: "Kent", Level: 1},
 	{ID: "3", Username: "Sarah", Level: 4},
 }
+
+
 var rooms = []room{
 	{ID: "1", Name: "Lobby 1", Gamemode: "King of the Hill", Players: 5, MaxPlayers: 10, VulnMachine: "Linux RootMe", King: "Lastest-king", Status: "Finished"},
 	{ID: "2", Name: "Troan's Private Game", Gamemode: "Attack & Defense", Players: 1, MaxPlayers: 10, VulnMachine: "Multiple", King: "Troan", Status: "Running"},
@@ -190,7 +196,10 @@ func addVulnMachine(c *gin.Context) {
 	for index, r := range rooms {
 		if r.ID == id {
 			// append the vulnerable machine to the room
-			rooms[index].VulnMachine = rooms[index].VulnMachine + c.PostForm("vulnMachine")
+
+			fmt.Println(c.PostForm("vuln_machine"))
+			fmt.Println("rooms[index].VulnMachine: " + rooms[index].VulnMachine)
+			rooms[index].VulnMachine = rooms[index].VulnMachine + c.PostForm("vuln_machine")
 
 			break
 		}
@@ -218,4 +227,20 @@ func getKing(c *gin.Context) {
 	c.AbortWithStatus(http.StatusNotFound)
 }
 
-// curl 
+
+// putKing updates the king of the room based on the specified ID.
+func putKing(c *gin.Context) {
+	// First get the ID parameter from the request.
+	id := c.Param("id")
+
+	// Find and update the room based on the ID.
+	for index, r := range rooms {
+		if r.ID == id {
+			rooms[index].King = c.PostForm("king")
+			break
+		}
+	}
+
+	c.String(http.StatusOK, "King updated!")
+}
+
