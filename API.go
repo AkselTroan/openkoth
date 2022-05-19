@@ -4,8 +4,40 @@ import (
     "net/http"
 	"fmt"
     "github.com/gin-gonic/gin"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
+
+func checkError(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+
+const (
+	host     = "localhost"
+	database = "openkoth"
+	username = "openkoth"
+	password = "openkoth"
+)
+
+
+// connect to mysql using the credentials in creds.
+func connect_db() (*sql.DB, error) {
+
+	var connectionString = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?allowNativePasswords=true", username, password, host, database)
+
+	// Initialize connection object.
+	db, err := sql.Open("mysql", connectionString)
+	checkError(err)
+	err = db.Ping()
+	checkError(err)
+	fmt.Println("Successfully created connection to database.")
+
+	return db, err
+}
 
 
 // room struct
@@ -44,10 +76,12 @@ var rooms = []room{
 	{ID: "3", Name: "Public Koth", Gamemode: "King of the Hill", Players: 4, MaxPlayers: 10, VulnMachine: "Windows Blue", King: "Not-Set", Status: "Waiting to Start"},
 }
 
+
 // getUsers responds with the list of all users as JSON.
 func getUsers(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, users)
 }
+
 
 // getUserByID locates the user whose ID value matches the id
 // parameter sent by the client, then returns that user as a response.
@@ -68,6 +102,7 @@ func getUserByID(c *gin.Context) {
 	c.AbortWithStatus(http.StatusNotFound)
 }
 
+
 // postUsers adds an user from JSON received in the request body.
 func postUsers(c *gin.Context) {
 	var newUser user
@@ -82,6 +117,7 @@ func postUsers(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusCreated, newUser)
 }
+
 
 // putUser updates an user based on the specified ID.
 func putUser(c *gin.Context) {
@@ -116,10 +152,12 @@ func deleteUser(c *gin.Context) {
 	c.String(http.StatusOK, "User deleted!")
 }
 
+
 // getRooms responds with the list of all rooms as JSON.
 func getRooms(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, rooms)
 }
+
 
 // getRoomByID locates the room whose ID value matches the id
 // parameter sent by the client, then returns that room as a response.
@@ -140,6 +178,7 @@ func getRoomByID(c *gin.Context) {
 	c.AbortWithStatus(http.StatusNotFound)
 }
 
+
 // postRooms adds an room from JSON received in the request body.
 func postRooms(c *gin.Context) {
 	var newRoom room
@@ -154,6 +193,7 @@ func postRooms(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusCreated, newRoom)
 }
+
 
 // putRoom updates an room based on the specified ID.
 func putRoom(c *gin.Context) {
@@ -171,6 +211,7 @@ func putRoom(c *gin.Context) {
 	c.String(http.StatusOK, "Room updated!")
 }
 
+
 // deleteRoom removes an room based on the specified ID.
 func deleteRoom(c *gin.Context) {
 	// First get the ID parameter from the request.
@@ -186,6 +227,7 @@ func deleteRoom(c *gin.Context) {
 
 	c.String(http.StatusOK, "Room deleted!")
 }
+
 
 // addVulnMachine adds vulnerable machines to the room based on the specified ID.
 func addVulnMachine(c *gin.Context) {

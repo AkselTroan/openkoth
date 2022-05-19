@@ -2,13 +2,21 @@ package main
 
 import (
     "github.com/gin-gonic/gin"
+
 )
 
 // main function
 func main() {
 	// Create a router without any middleware by default
-	router := gin.New()
 
+	
+	// connect to mysql
+	db, err := connect_db()
+	if err != nil {
+		panic(err)
+	}
+	
+	router := gin.New()
 	// Global middleware
 	// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN_MODE=release.
 	// By default gin.DefaultWriter = os.Stdout
@@ -17,7 +25,6 @@ func main() {
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	router.Use(gin.Recovery())
 
-	// Per route middleware, you can add as many as you desire.
 	
 	// Users
 	router.GET("/users", getUsers)
@@ -26,6 +33,7 @@ func main() {
 	router.PUT("/users/:id", putUser)
 	router.DELETE("/users/:id", deleteUser)
 	
+
 	// Rooms
 	router.GET("/rooms", getRooms)
 	router.GET("/rooms/:id", getRoomByID)
@@ -39,5 +47,9 @@ func main() {
 
 	// By default it serves on :8080 unless a PORT environment variable was defined.
 	router.Run("localhost:8080")
+
+	// close the database connection
+	defer db.Close()
+	
 }
 
