@@ -46,46 +46,50 @@ func main() {
 	// By default it serves on :8080 unless a PORT environment variable was defined.
 	go router.Run("localhost:8080") // Initialize a goroutine
 
-	fmt.Print("Test")
-	// close the database connection
-	//defer db.Close()
+	i := 0
+	for i < 3 {
 
-	netID := createNetwork("vulnNet2")
-	time.Sleep(10 * time.Second)
-	inspectNetwork("vulnNet2")
+		fmt.Print("Test")
+		// close the database connection
+		//defer db.Close()
 
-	// create a new container and return the container ID
-	container, err := CreateNewContainer("nginx")
-	if err != nil {
-		panic(err)
+		netID := createNetwork("vulnNet2")
+		time.Sleep(10 * time.Second)
+		inspectNetwork("vulnNet2")
+
+		// create a new container and return the container ID
+		container, err := CreateNewContainer("nginx")
+		if err != nil {
+			panic(err)
+		}
+
+		time.Sleep(10 * time.Second)
+
+		ListAllContainers()
+
+		LogsSpecificContainer(container.ID)
+
+		// StopAllContainers()
+
+		// ListAllImages()
+
+		// Pull an image from DockerHub
+		// PullImage("hello-world")
+
+		// Get the states of all containers in the docker environment
+		// GetAllContainerState()
+
+		GetContainerState(container.ID)
+
+		connectContainerToNetwork(container.ID, netID)
+		time.Sleep(10 * time.Second)
+
+		getContainerIPAddress(container.ID)
+
+		StopContainer(container.ID)
+		time.Sleep(10 * time.Second)
+
+		removeNetwork(netID)
+		i++
 	}
-
-	time.Sleep(10 * time.Second)
-
-	ListAllContainers()
-
-	LogsSpecificContainer(container.ID)
-
-	// StopAllContainers()
-
-	// ListAllImages()
-
-	// Pull an image from DockerHub
-	// PullImage("hello-world")
-
-	// Get the states of all containers in the docker environment
-	// GetAllContainerState()
-
-	GetContainerState(container.ID)
-
-	connectContainerToNetwork(container.ID, netID)
-	time.Sleep(10 * time.Second)
-
-	getContainerIPAddress(container.ID)
-
-	StopContainer(container.ID)
-	time.Sleep(10 * time.Second)
-
-	removeNetwork(netID)
-
 }
