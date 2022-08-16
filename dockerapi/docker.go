@@ -1,4 +1,4 @@
-package main
+package dockerapi
 
 import (
 	"context"
@@ -221,7 +221,7 @@ func GetContainerState(containerID string) {
 
 }
 
-func createNetwork(networkName string) (networkID string) {
+func CreateNetwork(networkName string) (networkID string) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 
@@ -244,7 +244,7 @@ func createNetwork(networkName string) (networkID string) {
 
 }
 
-func inspectNetwork(networkName string) {
+func InspectNetwork(networkName string) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -275,7 +275,7 @@ func inspectNetwork(networkName string) {
 }
 
 // connect container to network
-func connectContainerToNetwork(containerID string, networkID string) {
+func ConnectContainerToNetwork(containerID string, networkID string) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -290,7 +290,7 @@ func connectContainerToNetwork(containerID string, networkID string) {
 	fmt.Printf("Connected container: %s to network : %s\n", containerID, networkID)
 }
 
-func removeNetwork(networkID string) {
+func RemoveNetwork(networkID string) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 
@@ -303,7 +303,7 @@ func removeNetwork(networkID string) {
 }
 
 // get IP address of a container
-func getContainerIPAddress(containerID string) {
+func GetContainerIPAddress(containerID string) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {

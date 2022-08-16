@@ -1,4 +1,4 @@
-module akseltroan/openkoth
+module github.com/akseltroan/openkoth
 
 go 1.18
 
