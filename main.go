@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/akseltroan/openkoth/api"
+	"github.com/akseltroan/openkoth/dockerapi"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,21 +29,21 @@ func main() {
 	router.Use(gin.Recovery())
 
 	// Users
-	router.GET("/users", getUsers)
-	router.GET("/users/:id", getUserByID)
-	router.POST("/users", postUsers)
-	router.PUT("/users/:id", putUser)
-	router.DELETE("/users/:id", deleteUser)
+	router.GET("/users", api.GetUsers)
+	router.GET("/users/:id", api.GetUserByID)
+	router.POST("/users", api.PostUsers)
+	router.PUT("/users/:id", api.PutUser)
+	router.DELETE("/users/:id", api.DeleteUser)
 
 	// Rooms
-	router.GET("/rooms", getRooms)
-	router.GET("/rooms/:id", getRoomByID)
-	router.POST("/rooms", postRooms)
-	router.PUT("/rooms/:id", putRoom)
-	router.DELETE("/rooms/:id", deleteRoom)
-	router.POST("/rooms/:id/vulnMachine", addVulnMachine)
-	router.GET("/rooms/:id/king", getKing)
-	router.PUT("/rooms/:id/king", putKing)
+	router.GET("/rooms", api.GetRooms)
+	router.GET("/rooms/:id", api.GetRoomByID)
+	router.POST("/rooms", api.PostRooms)
+	router.PUT("/rooms/:id", api.PutRoom)
+	router.DELETE("/rooms/:id", api.DeleteRoom)
+	router.POST("/rooms/:id/vulnMachine", api.AddVulnMachine)
+	router.GET("/rooms/:id/king", api.GetKing)
+	router.PUT("/rooms/:id/king", api.PutKing)
 
 	// By default it serves on :8080 unless a PORT environment variable was defined.
 	go router.Run("localhost:8080") // Initialize a goroutine
@@ -53,21 +55,21 @@ func main() {
 		// close the database connection
 		//defer db.Close()
 
-		netID := createNetwork("vulnNet2")
+		netID := dockerapi.CreateNetwork("vulnNet2")
 		time.Sleep(10 * time.Second)
-		inspectNetwork("vulnNet2")
+		dockerapi.InspectNetwork("vulnNet2")
 
 		// create a new container and return the container ID
-		container, err := CreateNewContainer("nginx")
+		container, err := dockerapi.CreateNewContainer("nginx")
 		if err != nil {
 			panic(err)
 		}
 
 		time.Sleep(10 * time.Second)
 
-		ListAllContainers()
+		dockerapi.ListAllContainers()
 
-		LogsSpecificContainer(container.ID)
+		dockerapi.LogsSpecificContainer(container.ID)
 
 		// StopAllContainers()
 
@@ -79,17 +81,17 @@ func main() {
 		// Get the states of all containers in the docker environment
 		// GetAllContainerState()
 
-		GetContainerState(container.ID)
+		dockerapi.GetContainerState(container.ID)
 
-		connectContainerToNetwork(container.ID, netID)
+		dockerapi.ConnectContainerToNetwork(container.ID, netID)
 		time.Sleep(10 * time.Second)
 
-		getContainerIPAddress(container.ID)
+		dockerapi.GetContainerIPAddress(container.ID)
 
-		StopContainer(container.ID)
+		dockerapi.StopContainer(container.ID)
 		time.Sleep(10 * time.Second)
 
-		removeNetwork(netID)
+		dockerapi.RemoveNetwork(netID)
 		i++
 	}
 }
