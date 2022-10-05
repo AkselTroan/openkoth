@@ -13,7 +13,7 @@ def root():
 @app.route("/rooms")
 def rooms():
     r = requests.get("http://" + openkothAPI + "/rooms")
-    print(r.json()) # This method is convenient when the API returns JSON
+    print(r.json())
     return r.json()
 
 
@@ -21,16 +21,6 @@ def rooms():
 def tmp():
     return render_template("rooms.html")
 
-
-
-#@app.route("/NHIE", methods=["GET", "POST"])
-#def never_have_i_ever():
-#    if request.method == "POST":
-#        lines = open('Resources/DrinkingGames/NeverHaveIEver/NeverHaveIEver.txt').read().splitlines()
-#        statement = random.choice(lines)
-#        return render_template("NHIE.html", statement=statement)
-#    else:
-#        return render_template("NHIE.html")
 
 
 
