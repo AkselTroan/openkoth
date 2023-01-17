@@ -19,7 +19,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#page-top">OpenKoth</a>
+                <a class="navbar-brand" href="/">OpenKoth</a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -44,8 +44,23 @@
                     <p style="background-image: url('static/img/wallpaper.png');"> 
                     <div class="text-center">
                         <h1 class="mx-auto my-0 text-uppercase">OpenKoth</h1>
-                        <h2 class="text-white-50 mx-auto mt-2 mb-5">The Open Source King of The Hill Platform</h2>
-                        <a class="btn btn-primary" href="/login">Get Started</a>
+                    </div>
+
+                    <div class="col-md-10 col-lg-8 mx-auto text-center">
+                        <form method="post">
+                            <label for="username" class="text-white 25 mx auto">Username:</label>
+                            <input type="text" id="username" name="username"><br><br>
+                        
+                            <label for="password" class="text-white 25 mx auto">Password:</label>
+                            <input type="password" id="password" name="password"><br><br>
+
+                            <button class="btn btn-primary" type="submit" name="submit_button" value="Login">Login</button>
+                        </form>
+
+                        <br>
+                        <br>
+                        <p class="text-white 25 mx auto">Dont have an account? Register 
+                            <a href="/register">here</a></p>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,27 @@ def rooms():
     return r.json()
 
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    return "Current under developement. Please come back later!"
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    return render_template("login.html")
+
+
+@app.route("/info")
+def info():
+    return render_template("info.html")
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+
 @app.route("/tmp")
 def tmp():
     return render_template("rooms.html")
